@@ -1,5 +1,6 @@
 class MonitoredUrl < ApplicationRecord
   belongs_to :user
+  has_many :url_checks, dependent: :destroy
 
   validates :url,
     presence: true,
@@ -25,6 +26,10 @@ class MonitoredUrl < ApplicationRecord
     inclusion: { in: STATUSES }
 
   validate :last_checked_at_required_if_checked
+
+  def due_for_check?
+    last_checked_at.nil? || Time.current - last_checked_at >= check_interval
+  end
 
   private
 

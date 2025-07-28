@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_28_193943) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_28_231033) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -25,6 +25,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_28_193943) do
     t.datetime "updated_at", null: false
     t.index ["user_id", "url"], name: "index_monitored_urls_on_user_id_and_url", unique: true
     t.index ["user_id"], name: "index_monitored_urls_on_user_id"
+  end
+
+  create_table "url_checks", force: :cascade do |t|
+    t.bigint "monitored_url_id", null: false
+    t.string "status", null: false
+    t.float "response_time"
+    t.string "error_message"
+    t.datetime "checked_at", null: false
+    t.index ["monitored_url_id", "checked_at"], name: "index_url_checks_on_monitored_url_id_and_checked_at"
+    t.index ["monitored_url_id"], name: "index_url_checks_on_monitored_url_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -43,4 +53,5 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_28_193943) do
   end
 
   add_foreign_key "monitored_urls", "users"
+  add_foreign_key "url_checks", "monitored_urls"
 end

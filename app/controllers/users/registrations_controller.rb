@@ -11,18 +11,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
       headers["Authorization"] = "Bearer #{@token}"
 
       render json: {
-        status: {
-          code: 200,
-          message: "Signed up successfully."
-        },
-        data: {
-          user: UserSerializer.new(resource).serializable_hash[:data][:attributes],
-          token: @token
-        }
+        user: UserSerializer.new(resource).serializable_hash[:data][:attributes],
+        token: @token
       }
     else
       render json: {
-        status: { message: "User couldn't be created successfully. #{resource.errors.full_messages.to_sentence}" }
+        message: "User couldn't be created successfully. #{resource.errors.full_messages.to_sentence}"
       }, status: :unprocessable_entity
     end
   end
@@ -36,13 +30,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
 
     if current_user
-      render json: {
-        status: { code: 200, message: "Logged out successfully." }
-      }, status: :ok
+      render json: { message: "Logged out successfully." }, status: :ok
     else
-      render json: {
-        status: { code: 401, message: "Couldn't find an active session." }
-      }, status: :unauthorized
+      render json: { message: "Couldn't find an active session." }, status: :unauthorized
     end
   end
 end

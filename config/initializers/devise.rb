@@ -312,7 +312,12 @@ Devise.setup do |config|
   # config.sign_in_after_change_password = true
 
   config.jwt do |jwt|
-    jwt.secret = Rails.application.credentials.devise_jwt_secret_key!
+    # Use credentials in production/development, fallback to a test key in test environment
+    jwt.secret = if Rails.env.test?
+                    "test_jwt_secret_key_for_testing_only_do_not_use_in_production"
+    else
+                    Rails.application.credentials.devise_jwt_secret_key!
+    end
     jwt.dispatch_requests = [
       [ "POST", %r{^/api/v1/login$} ]
     ]

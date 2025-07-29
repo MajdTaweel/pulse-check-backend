@@ -3,6 +3,8 @@ require "test_helper"
 class MonitoredUrlsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @monitored_url = monitored_urls(:one)
+    @user = users(:one)
+    sign_in @user
   end
 
   test "should get index" do
@@ -12,7 +14,13 @@ class MonitoredUrlsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create monitored_url" do
     assert_difference("MonitoredUrl.count") do
-      post monitored_urls_url, params: { monitored_url: { check_interval: @monitored_url.check_interval, status: @monitored_url.status, url: @monitored_url.url } }, as: :json
+      post monitored_urls_url, params: {
+        monitored_url: {
+          check_interval: 300,
+          url: "https://unique-test-url.com",
+          name: "New Test URL"
+        }
+      }, as: :json
     end
 
     assert_response :created
@@ -24,7 +32,12 @@ class MonitoredUrlsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update monitored_url" do
-    patch monitored_url_url(@monitored_url), params: { monitored_url: { check_interval: @monitored_url.check_interval, status: @monitored_url.status, url: @monitored_url.url } }, as: :json
+    patch monitored_url_url(@monitored_url), params: {
+      monitored_url: {
+        check_interval: 600,
+        name: "Updated Test URL"
+      }
+    }, as: :json
     assert_response :success
   end
 

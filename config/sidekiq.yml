@@ -1,5 +1,5 @@
 :schedule:
   schedule_pings:
-    every: ["15s"]
+    every: ["30s"]
     class: "SchedulePingsJob"
     queue: default

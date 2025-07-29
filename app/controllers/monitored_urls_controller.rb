@@ -2,7 +2,9 @@ class MonitoredUrlsController < ApplicationController
   include Pagination
 
   before_action :authenticate_user!
-  before_action :set_monitored_url, only: %i[ show update destroy ]
+  before_action :set_monitored_url, only: %i[ update destroy ]
+  before_action :set_monitored_url_with_checks, only: %i[show]
+
 
   # GET /monitored_urls
   def index
@@ -45,6 +47,11 @@ class MonitoredUrlsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_monitored_url
       @monitored_url = current_user.monitored_urls.find(params.expect(:id))
+    end
+
+    def set_monitored_url_with_checks
+      # TODO: Should only load checks in the last X days (static or provided by the user)
+      @monitored_url = MonitoredUrl.includes(:url_checks).find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.

@@ -1,0 +1,22 @@
+# fly.toml app configuration file generated for pulse-check-redis on 2025-07-29T09:15:13+03:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'pulse-check-redis'
+primary_region = 'fra'
+
+[build]
+
+[[mounts]]
+  source = 'redis_server'
+  destination = '/data'
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
+
+[[metrics]]
+  port = 9091
+  path = '/metrics'

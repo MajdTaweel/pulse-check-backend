@@ -40,7 +40,7 @@ gem "devise"
 gem "devise-jwt"
 gem "jsonapi-serializer"
 
-gem "httparty", "~> 0.23.1"
+gem "httparty", "~> 0.23.2"
 
 gem "sidekiq", "~> 8.0"
 gem "sidekiq-scheduler", "~> 6.0"
